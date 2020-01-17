@@ -29,6 +29,8 @@ public class ChooseBoat : MonoBehaviour
     public InputField goldInputField;
     private Dictionary<int, int> player_wallet = new Dictionary<int, int>();
     public GameObject FleetDir;
+    public GameObject BoatsP1;
+    public GameObject BoatsP2;
 
     private int boats_in_column = 5;
     // Start is called before the first frame update
@@ -145,6 +147,7 @@ public class ChooseBoat : MonoBehaviour
 
     private void changePlayer()
     {
+
         GameObject[] fleet =  GameObject.FindGameObjectsWithTag("prefabBoatInFleet");
         foreach (GameObject boat in fleet)
             Destroy(boat.gameObject);

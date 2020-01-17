@@ -15,6 +15,20 @@ public class MoveBoat : MonoBehaviour
         halo.enabled = false;
     }
 
+    public void DeselectAll()
+    {
+        GameObject[] boats = GameObject.FindGameObjectsWithTag("MovableBoat");
+        foreach (GameObject boat in boats) {
+            boat.GetComponent<MoveBoat>().DeselectThisBoat();
+        }
+    }
+
+    public void DeselectThisBoat()
+    {
+        selected = true;
+        this.OnMouseUp();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -51,6 +65,7 @@ public class MoveBoat : MonoBehaviour
         }
         else
         {
+            DeselectAll();
             Behaviour halo = (Behaviour)GetComponent("Halo");
             halo.enabled = true;
             selected = true;
