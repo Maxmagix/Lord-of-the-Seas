@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,9 +19,15 @@ public class PlayerTurn : MonoBehaviour
     public GameObject endPos;
     private Vector3 startPosMask;
 
+    public InputField time;
+
 
     void Start()
     {
+        var value = 0;
+        if (Int32.TryParse(time.text, out value) && value > 0) {
+            timeForTurn = value;
+        }
         startPosFire = fire.gameObject.transform.position;
         startPosRope = ropeTimeLeft.gameObject.transform.position;
         startPosMask = ropeMask.gameObject.transform.position;

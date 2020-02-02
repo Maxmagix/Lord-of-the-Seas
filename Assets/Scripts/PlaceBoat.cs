@@ -14,6 +14,6 @@ public class PlaceBoat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        BoatSelection.SetActive(true);
+        BoatSelection.SetActive(true);  
     }
 }

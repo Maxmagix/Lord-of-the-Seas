@@ -11,6 +11,7 @@ public class ChooseBoat : MonoBehaviour
     [SerializeField] private translateCamera camera;
     public Button confirmButton;
     public GameObject prefabButtonBoat;
+    public GameObject prefabPlaceBoat;
     public GameObject prefabBuyAnimation;
 
     public Dictionary<int, String>[] boats = new Dictionary<int, String>[2];
@@ -29,11 +30,61 @@ public class ChooseBoat : MonoBehaviour
     public InputField goldInputField;
     private Dictionary<int, int> player_wallet = new Dictionary<int, int>();
     public GameObject FleetDir;
-    public GameObject BoatsP1;
-    public GameObject BoatsP2;
+    private Dictionary<int, GameObject> BoatsP1;
+    private Dictionary<int, GameObject> BoatsP2;
 
-    private int boats_in_column = 5;
+    public GameObject PlacementBoatP1;
+    public GameObject PlacementBoatP2;
+
+    private int boats_in_column = 6;
     // Start is called before the first frame update
+
+    public void resetToFull(int index)
+    {
+        int nb_boat = 0;
+        int boatsInColumn = 7;
+
+        GameObject[] fleet =  GameObject.FindGameObjectsWithTag("prefabBoatInFleet");
+        foreach (GameObject boat in fleet)
+            Destroy(boat.gameObject);
+        GameObject[] waterBoat =  GameObject.FindGameObjectsWithTag("Boat");
+        foreach (GameObject boat in waterBoat)
+            Destroy(boat.gameObject);
+        if (index == 1) {
+            var newpos = PlacementBoatP1.gameObject.transform.position;
+            foreach (GameObject boat in BoatsP1.Values) {
+                //copy to placement P1//
+                GameObject copyBoat = Instantiate(prefabPlaceBoat, new Vector3(newpos.x - ((nb_boat / boats_in_column) * 350), newpos.y - ((nb_boat % boatsInColumn) * 100), newpos.z), Quaternion.identity);
+                copyBoat.name = nb_boat.ToString();
+                copyBoat.transform.SetParent(PlacementBoatP1.transform);
+                copyBoat.transform.GetChild(2).transform.GetComponent<Text>().text = boat.gameObject.transform.GetChild(2).transform.GetComponent<Text>().text;
+                copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{removeBoat(boat.name);});
+                nb_boat++;
+            }
+        } else if (index == 2) {
+            var newpos = PlacementBoatP2.gameObject.transform.position;
+            foreach (GameObject boat in BoatsP2.Values) {
+                //copy to placement P1//
+                GameObject copyBoat = Instantiate(prefabPlaceBoat, new Vector3(newpos.x - ((nb_boat / boats_in_column) * 350), newpos.y - ((nb_boat % boatsInColumn) * 100), newpos.z), Quaternion.identity);
+                copyBoat.name = nb_boat.ToString();
+                copyBoat.transform.SetParent(PlacementBoatP2.transform);
+                copyBoat.transform.GetChild(2).transform.GetComponent<Text>().text = boat.gameObject.transform.GetChild(2).transform.GetComponent<Text>().text;
+                copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{removeBoat(boat.name);});
+                nb_boat++;
+            }
+        }
+    }
+
+    private void checkOneBoatAtLeast()
+    {
+        if (player_wallet[playerTurn] == max_money) {
+            confirmButton.gameObject.transform.GetChild(0).transform.GetComponent<Text>().color = new Color(0.6320f, 0.6320f, 0.6320f, 1);
+            confirmButton.interactable = false;
+        } else {
+            confirmButton.gameObject.transform.GetChild(0).transform.GetComponent<Text>().color = new Color(1, 0.8564f, 0, 1);
+            confirmButton.interactable = true;
+        }
+    }
 
     public void setGold(String goldstr)
     {
@@ -147,18 +198,44 @@ public class ChooseBoat : MonoBehaviour
 
     private void changePlayer()
     {
-
+        int nb_boat = 0;
+        int boatsInColumn = 7;
         GameObject[] fleet =  GameObject.FindGameObjectsWithTag("prefabBoatInFleet");
-        foreach (GameObject boat in fleet)
-            Destroy(boat.gameObject);
-        if (playerTurn == 0)
+ 
+        if (playerTurn == 0) {
             playerTurn++;
-        else {
+            var newpos = PlacementBoatP1.gameObject.transform.position;
+            foreach (GameObject boat in fleet) {
+                //copy to placement P1//
+                GameObject copyBoat = Instantiate(prefabPlaceBoat, new Vector3(newpos.x - ((nb_boat / boats_in_column) * 350), newpos.y - ((nb_boat % boatsInColumn) * 100), newpos.z), Quaternion.identity);
+                copyBoat.name = nb_boat.ToString();
+                copyBoat.transform.SetParent(PlacementBoatP1.transform);
+                copyBoat.transform.GetChild(2).transform.GetComponent<Text>().text = boat.gameObject.transform.GetChild(2).transform.GetComponent<Text>().text;
+                copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{removeBoat(boat.name);});
+                BoatsP1[nb_boat] = copyBoat;
+                Destroy(boat.gameObject);
+                nb_boat++;
+            }
+        } else {
+            var newpos = PlacementBoatP2.gameObject.transform.position;
+            foreach (GameObject boat in fleet) {
+                //copy to placement P2//
+                GameObject copyBoat = Instantiate(prefabPlaceBoat, new Vector3(newpos.x - ((nb_boat / boats_in_column) * 350), newpos.y - ((nb_boat % boatsInColumn) * 100), newpos.z), Quaternion.identity);
+                copyBoat.name = nb_boat.ToString();
+                copyBoat.transform.SetParent(PlacementBoatP2.transform);
+                copyBoat.transform.GetChild(2).transform.GetComponent<Text>().text = boat.gameObject.transform.GetChild(2).transform.GetComponent<Text>().text;
+                copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{removeBoat(boat.name);});
+                BoatsP2[nb_boat] = copyBoat;
+                Destroy(boat.gameObject);
+                nb_boat++;
+            }
             camera.translate(1);
         }
     }
     void Start()
     {
+        BoatsP1 = new Dictionary<int, GameObject>();
+        BoatsP2 = new Dictionary<int, GameObject>();
         boats[0] = new Dictionary<int, String>();
         boats[1] = new Dictionary<int, String>();
         playerTurn = 0;
@@ -186,6 +263,7 @@ public class ChooseBoat : MonoBehaviour
 
     public void Update()
     {
+        checkOneBoatAtLeast();
         setGold(goldInputField.text);
         updateGold();
         playerTurnText.text = "Player " + (playerTurn + 1).ToString() + " turn";
