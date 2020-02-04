@@ -47,29 +47,31 @@ public class ChooseBoat : MonoBehaviour
         GameObject[] fleet =  GameObject.FindGameObjectsWithTag("prefabBoatInFleet");
         foreach (GameObject boat in fleet)
             Destroy(boat.gameObject);
-        GameObject[] waterBoat =  GameObject.FindGameObjectsWithTag("Boat");
+        GameObject[] waterBoat =  GameObject.FindGameObjectsWithTag("MovableBoat");
         foreach (GameObject boat in waterBoat)
             Destroy(boat.gameObject);
         if (index == 1) {
             var newpos = PlacementBoatP1.gameObject.transform.position;
             foreach (GameObject boat in BoatsP1.Values) {
                 //copy to placement P1//
-                GameObject copyBoat = Instantiate(prefabPlaceBoat, new Vector3(newpos.x - ((nb_boat / boats_in_column) * 350), newpos.y - ((nb_boat % boatsInColumn) * 100), newpos.z), Quaternion.identity);
+                GameObject copyBoat = Instantiate(boat, new Vector3(newpos.x - ((nb_boat / boatsInColumn) * 350), newpos.y - ((nb_boat % (boatsInColumn)) * 100), newpos.z), Quaternion.identity);
                 copyBoat.name = nb_boat.ToString();
                 copyBoat.transform.SetParent(PlacementBoatP1.transform);
                 copyBoat.transform.GetChild(2).transform.GetComponent<Text>().text = boat.gameObject.transform.GetChild(2).transform.GetComponent<Text>().text;
                 copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{removeBoat(boat.name);});
+                BoatsP1[nb_boat] = copyBoat;
                 nb_boat++;
             }
         } else if (index == 2) {
             var newpos = PlacementBoatP2.gameObject.transform.position;
             foreach (GameObject boat in BoatsP2.Values) {
                 //copy to placement P1//
-                GameObject copyBoat = Instantiate(prefabPlaceBoat, new Vector3(newpos.x - ((nb_boat / boats_in_column) * 350), newpos.y - ((nb_boat % boatsInColumn) * 100), newpos.z), Quaternion.identity);
+                GameObject copyBoat = Instantiate(boat, new Vector3(newpos.x - ((nb_boat / boatsInColumn) * 350), newpos.y - ((nb_boat % (boatsInColumn)) * 100), newpos.z), Quaternion.identity);
                 copyBoat.name = nb_boat.ToString();
                 copyBoat.transform.SetParent(PlacementBoatP2.transform);
                 copyBoat.transform.GetChild(2).transform.GetComponent<Text>().text = boat.gameObject.transform.GetChild(2).transform.GetComponent<Text>().text;
                 copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{removeBoat(boat.name);});
+                BoatsP2[nb_boat] = copyBoat;
                 nb_boat++;
             }
         }
