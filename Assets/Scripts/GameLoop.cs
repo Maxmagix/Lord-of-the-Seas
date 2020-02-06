@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Gameplay;
 
 public class GameLoop : MonoBehaviour
 {
 
+    public ChooseBoat boats;
     public GameObject placementTurn1;
     public GameObject placementTurn2;
 
@@ -47,6 +49,14 @@ public class GameLoop : MonoBehaviour
         screen.SetActive(true);
     }
 
+    public void ChangeCollisions(bool state)
+    {
+        GameObject[] boats = GameObject.FindGameObjectsWithTag("MovableBoat");
+        foreach (GameObject boat in boats) {
+            boat.GetComponent<Gameplay.MoveBoat>().SetCollisions(state);
+        }
+    }
+
     public void ChangeScreen()
     {
         screen++;
@@ -54,19 +64,18 @@ public class GameLoop : MonoBehaviour
             screen = 4; 
         switch(screen) {
             case 0: setActiveThisScreen(interTurn1); break;
-            case 1: setActiveThisScreen(placementTurn1); Player1Fog.SetActive(false); Player1Boats.SetActive(true); break;
+            case 1: setActiveThisScreen(placementTurn1); Player1Fog.SetActive(false); Player1Boats.SetActive(true); boats.resetToFull(1); break;
             case 2: setActiveThisScreen(interTurn2); Player1Fog.SetActive(true); Player1Boats.SetActive(false); break;
-            case 3: setActiveThisScreen(placementTurn2); Player2Fog.SetActive(false); Player2Boats.SetActive(true); break;
+            case 3: setActiveThisScreen(placementTurn2); Player2Fog.SetActive(false); Player2Boats.SetActive(true); boats.resetToFull(2); break;
             case 4: setActiveThisScreen(interTurn1); Player2Fog.SetActive(true); Player2Boats.SetActive(false); break;
-            case 5: setActiveThisScreen(Turn1); Player1Fog.SetActive(false); Player1Boats.SetActive(true); Turn1.GetComponent<PlayerTurn>().reset(); break;
+            case 5: setActiveThisScreen(Turn1); Player1Fog.SetActive(false); Player1Boats.SetActive(true); Turn1.GetComponent<PlayerTurn>().reset(); ChangeCollisions(true); break;
             case 6: setActiveThisScreen(interTurn2); Player1Fog.SetActive(true); Player1Boats.SetActive(false); break;
-            case 7: setActiveThisScreen(Turn2); Player2Fog.SetActive(false); Player2Boats.SetActive(true); Turn2.GetComponent<PlayerTurn>().reset(); break;
+            case 7: setActiveThisScreen(Turn2); Player2Fog.SetActive(false); Player2Boats.SetActive(true); Turn2.GetComponent<PlayerTurn>().reset(); ChangeCollisions(true); break;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 }

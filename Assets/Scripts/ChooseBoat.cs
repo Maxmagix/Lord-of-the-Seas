@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine.UI;
 using System;
 using Cameras;
+using Gameplay;
 
 public class ChooseBoat : MonoBehaviour
 {
@@ -30,11 +31,17 @@ public class ChooseBoat : MonoBehaviour
     public InputField goldInputField;
     private Dictionary<int, int> player_wallet = new Dictionary<int, int>();
     public GameObject FleetDir;
-    private Dictionary<int, GameObject> BoatsP1;
-    private Dictionary<int, GameObject> BoatsP2;
+    private List<string> BoatsP1 = new List<string>();
+    private List<string> BoatsP2 = new List<string>();
+
+    public GameObject GridBoatsP1;
+
+    public GameObject GridBoatsP2;
 
     public GameObject PlacementBoatP1;
     public GameObject PlacementBoatP2;
+    public Tile SpawnTileP1;
+    public Tile SpawnTileP2;
 
     private int boats_in_column = 6;
     // Start is called before the first frame update
@@ -42,7 +49,7 @@ public class ChooseBoat : MonoBehaviour
     public void resetToFull(int index)
     {
         int nb_boat = 0;
-        int boatsInColumn = 7;
+        int boatsInColumn = 6;
 
         GameObject[] fleet =  GameObject.FindGameObjectsWithTag("prefabBoatInFleet");
         foreach (GameObject boat in fleet)
@@ -52,26 +59,26 @@ public class ChooseBoat : MonoBehaviour
             Destroy(boat.gameObject);
         if (index == 1) {
             var newpos = PlacementBoatP1.gameObject.transform.position;
-            foreach (GameObject boat in BoatsP1.Values) {
+            foreach (string boat in BoatsP1) {
                 //copy to placement P1//
-                GameObject copyBoat = Instantiate(boat, new Vector3(newpos.x - ((nb_boat / boatsInColumn) * 350), newpos.y - ((nb_boat % (boatsInColumn)) * 100), newpos.z), Quaternion.identity);
+                GameObject copyBoat = Instantiate(prefabPlaceBoat, new Vector3(newpos.x - ((nb_boat / boatsInColumn) * 800), newpos.y - 25 - ((nb_boat % boatsInColumn) * 70), newpos.z), Quaternion.identity);
                 copyBoat.name = nb_boat.ToString();
                 copyBoat.transform.SetParent(PlacementBoatP1.transform);
-                copyBoat.transform.GetChild(2).transform.GetComponent<Text>().text = boat.gameObject.transform.GetChild(2).transform.GetComponent<Text>().text;
-                copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{removeBoat(boat.name);});
-                BoatsP1[nb_boat] = copyBoat;
+                copyBoat.transform.localScale = new Vector3(1.1f,1f,1f);
+                copyBoat.transform.GetChild(2).transform.GetComponent<Text>().text = boat;
+                copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{destroyBoat(copyBoat.name);});
                 nb_boat++;
             }
         } else if (index == 2) {
             var newpos = PlacementBoatP2.gameObject.transform.position;
-            foreach (GameObject boat in BoatsP2.Values) {
+            foreach (string boat in BoatsP2) {
                 //copy to placement P1//
-                GameObject copyBoat = Instantiate(boat, new Vector3(newpos.x - ((nb_boat / boatsInColumn) * 350), newpos.y - ((nb_boat % (boatsInColumn)) * 100), newpos.z), Quaternion.identity);
+                GameObject copyBoat = Instantiate(prefabPlaceBoat, new Vector3(newpos.x - ((nb_boat / boatsInColumn) * 800), newpos.y - 25 - ((nb_boat % boatsInColumn) * 70), newpos.z), Quaternion.identity);
                 copyBoat.name = nb_boat.ToString();
                 copyBoat.transform.SetParent(PlacementBoatP2.transform);
-                copyBoat.transform.GetChild(2).transform.GetComponent<Text>().text = boat.gameObject.transform.GetChild(2).transform.GetComponent<Text>().text;
-                copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{removeBoat(boat.name);});
-                BoatsP2[nb_boat] = copyBoat;
+                copyBoat.transform.localScale = new Vector3(1.1f,1f,1f);
+                copyBoat.transform.GetChild(2).transform.GetComponent<Text>().text = boat;
+                copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{destroyBoat(copyBoat.name);});
                 nb_boat++;
             }
         }
@@ -140,6 +147,41 @@ public class ChooseBoat : MonoBehaviour
         player_wallet[playerTurn] -= priceBoats[indexboat];
     }
 
+
+    public void destroyBoat(String name)
+    {
+        string boatName = "";
+
+        GameObject[] fleet =  GameObject.FindGameObjectsWithTag("prefabBoatInFleet");
+        foreach (GameObject boat in fleet)
+            if (boat.name == name) {
+                boatName = boat.transform.GetChild(2).transform.GetComponent<Text>().text;
+                Destroy(boat.gameObject);
+            }
+        foreach (GameObject boatOfMarket in marketBoats) {
+            Debug.Log(boatName + " compared to " + boatOfMarket.gameObject.name);
+            if (boatOfMarket.gameObject.name == boatName) {
+                if (GridBoatsP1.active) {
+                    GameObject newBoat = Instantiate(boatOfMarket.gameObject, GridBoatsP1.transform);
+                    newBoat.SetActive(true);
+                    newBoat.transform.GetComponent<Gameplay.MoveBoat>().tile = SpawnTileP1;
+                    newBoat.transform.position = SpawnTileP1.gameObject.transform.position;
+                    Vector2 decal = newBoat.transform.GetComponent<Gameplay.MoveBoat>().decal;
+                    newBoat.transform.position += new Vector3(decal.x, 0, decal.y);
+                }
+                if (GridBoatsP2.active) {
+                    GameObject newBoat = Instantiate(boatOfMarket.gameObject, GridBoatsP2.transform);
+                    newBoat.SetActive(true);
+                    newBoat.transform.GetComponent<Gameplay.MoveBoat>().tile = SpawnTileP2;
+                    newBoat.transform.position = SpawnTileP2.gameObject.transform.position;
+                    Vector2 decal = newBoat.transform.GetComponent<Gameplay.MoveBoat>().decal;
+                    newBoat.transform.position += new Vector3(decal.x, 0, decal.y);
+                }
+            }
+        }
+    }
+
+
     public void removeBoat(String name)
     {
         Color textColor = new Color(0,0,0);
@@ -201,33 +243,35 @@ public class ChooseBoat : MonoBehaviour
     private void changePlayer()
     {
         int nb_boat = 0;
-        int boatsInColumn = 7;
+        int boatsInColumn = 6;
         GameObject[] fleet =  GameObject.FindGameObjectsWithTag("prefabBoatInFleet");
  
         if (playerTurn == 0) {
+            BoatsP1.Clear();
             playerTurn++;
             var newpos = PlacementBoatP1.gameObject.transform.position;
             foreach (GameObject boat in fleet) {
                 //copy to placement P1//
-                GameObject copyBoat = Instantiate(prefabPlaceBoat, new Vector3(newpos.x - ((nb_boat / boats_in_column) * 350), newpos.y - ((nb_boat % boatsInColumn) * 100), newpos.z), Quaternion.identity);
+                GameObject copyBoat = Instantiate(prefabPlaceBoat, new Vector3(newpos.x - ((nb_boat / boatsInColumn) * 1000), newpos.y - 50 -  ((nb_boat % boatsInColumn) * 90), newpos.z), Quaternion.identity);
                 copyBoat.name = nb_boat.ToString();
                 copyBoat.transform.SetParent(PlacementBoatP1.transform);
                 copyBoat.transform.GetChild(2).transform.GetComponent<Text>().text = boat.gameObject.transform.GetChild(2).transform.GetComponent<Text>().text;
-                copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{removeBoat(boat.name);});
-                BoatsP1[nb_boat] = copyBoat;
+                copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{destroyBoat(boat.name);});
+                BoatsP1.Add(boat.gameObject.transform.GetChild(2).transform.GetComponent<Text>().text);
                 Destroy(boat.gameObject);
                 nb_boat++;
             }
         } else {
+            BoatsP2.Clear();
             var newpos = PlacementBoatP2.gameObject.transform.position;
             foreach (GameObject boat in fleet) {
                 //copy to placement P2//
-                GameObject copyBoat = Instantiate(prefabPlaceBoat, new Vector3(newpos.x - ((nb_boat / boats_in_column) * 350), newpos.y - ((nb_boat % boatsInColumn) * 100), newpos.z), Quaternion.identity);
+                GameObject copyBoat = Instantiate(prefabPlaceBoat, new Vector3(newpos.x - ((nb_boat / boatsInColumn) * 1000), newpos.y - 50 - ((nb_boat % boatsInColumn) * 90), newpos.z), Quaternion.identity);
                 copyBoat.name = nb_boat.ToString();
                 copyBoat.transform.SetParent(PlacementBoatP2.transform);
                 copyBoat.transform.GetChild(2).transform.GetComponent<Text>().text = boat.gameObject.transform.GetChild(2).transform.GetComponent<Text>().text;
-                copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{removeBoat(boat.name);});
-                BoatsP2[nb_boat] = copyBoat;
+                copyBoat.transform.GetChild(3).transform.GetComponent<Button>().onClick.AddListener(delegate{destroyBoat(boat.name);});
+                BoatsP2.Add(boat.gameObject.transform.GetChild(2).transform.GetComponent<Text>().text);
                 Destroy(boat.gameObject);
                 nb_boat++;
             }
@@ -236,8 +280,6 @@ public class ChooseBoat : MonoBehaviour
     }
     void Start()
     {
-        BoatsP1 = new Dictionary<int, GameObject>();
-        BoatsP2 = new Dictionary<int, GameObject>();
         boats[0] = new Dictionary<int, String>();
         boats[1] = new Dictionary<int, String>();
         playerTurn = 0;

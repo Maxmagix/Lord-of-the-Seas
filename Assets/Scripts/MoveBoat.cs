@@ -2,73 +2,105 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveBoat : MonoBehaviour
+namespace Gameplay
 {
-    public Tile tile;
-    private bool selected;
-
-    // Start is called before the first frame update
-    void Start()
+    public class MoveBoat : MonoBehaviour
     {
-        selected = false;
-        Behaviour halo = (Behaviour)GetComponent("Halo");
-        halo.enabled = false;
-    }
+        public Vector2 decal;
+        public Tile tile;
+        public bool selected;
+        private bool collisions;
 
-    public void DeselectAll()
-    {
-        GameObject[] boats = GameObject.FindGameObjectsWithTag("MovableBoat");
-        foreach (GameObject boat in boats) {
-            boat.GetComponent<MoveBoat>().DeselectThisBoat();
-        }
-    }
-
-    public void DeselectThisBoat()
-    {
-        selected = true;
-        this.OnMouseUp();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (!selected) return;
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        // Start is called before the first frame update
+        void Start()
         {
-            this.transform.position = tile.leftTile.transform.position;
-            tile = tile.leftTile;
-        }
-        else if (Input.GetKeyUp(KeyCode.UpArrow))
-        {
-            this.transform.position = tile.topTile.transform.position;
-            tile = tile.topTile;
-        }
-        else if (Input.GetKeyUp(KeyCode.RightArrow))
-        {
-            this.transform.position = tile.rightTile.transform.position;
-            tile = tile.rightTile;
-        }
-        else if (Input.GetKeyUp(KeyCode.DownArrow))
-        {
-            this.transform.position = tile.botTile.transform.position;
-            tile = tile.botTile;
-        }
-    }
-
-    void OnMouseUp()
-    {
-        if (selected)
-        {
+            collisions = false;
             selected = false;
             Behaviour halo = (Behaviour)GetComponent("Halo");
             halo.enabled = false;
         }
-        else
+
+        public void SetCollisions(bool state)
         {
-            DeselectAll();
-            Behaviour halo = (Behaviour)GetComponent("Halo");
-            halo.enabled = true;
+            collisions = state;
+        }
+        public void SetCollisionsToAll(bool state)
+        {
+            GameObject[] boats = GameObject.FindGameObjectsWithTag("MovableBoat");
+            foreach (GameObject boat in boats) {
+                boat.GetComponent<MoveBoat>().SetCollisions(state);
+            }
+        }
+
+        public void DeselectAll()
+        {
+            GameObject[] boats = GameObject.FindGameObjectsWithTag("MovableBoat");
+            foreach (GameObject boat in boats) {
+                boat.GetComponent<MoveBoat>().DeselectThisBoat();
+            }
+        }
+
+        public void DeselectThisBoat()
+        {
             selected = true;
+            this.OnMouseUp();
+        }
+
+        public bool CheckIfEmpty(Tile nextTile)
+        {
+            GameObject[] boats = GameObject.FindGameObjectsWithTag("MovableBoat");
+            foreach (GameObject boat in boats) {
+                if (boat.GetComponent<MoveBoat>().tile == nextTile)
+                    return false;
+            }
+            return true;
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (!selected) return;
+            if (Input.GetKeyUp(KeyCode.LeftArrow) && (!collisions || CheckIfEmpty(tile.leftTile)))
+            {
+                this.transform.position = tile.leftTile.transform.position;
+                this.transform.position += new Vector3(decal.x, 0, decal.y);
+                tile = tile.leftTile;
+            }
+            else if (Input.GetKeyUp(KeyCode.UpArrow) && (!collisions || CheckIfEmpty(tile.topTile)))
+            {
+                this.transform.position = tile.topTile.transform.position;
+                this.transform.position += new Vector3(decal.x, 0, decal.y);
+                tile = tile.topTile;
+            }
+            else if (Input.GetKeyUp(KeyCode.RightArrow) && (!collisions || CheckIfEmpty(tile.rightTile)))
+            {
+                this.transform.position = tile.rightTile.transform.position;
+                this.transform.position += new Vector3(decal.x, 0, decal.y);
+                tile = tile.rightTile;
+            }
+            else if (Input.GetKeyUp(KeyCode.DownArrow) && (!collisions || CheckIfEmpty(tile.botTile)))
+            {
+                this.transform.position = tile.botTile.transform.position;
+                this.transform.position += new Vector3(decal.x, 0, decal.y);
+                tile = tile.botTile;
+            }
+        }
+
+        void OnMouseUp()
+        {
+            if (selected)
+            {
+                selected = false;
+                Behaviour halo = (Behaviour)GetComponent("Halo");
+                halo.enabled = false;
+            }
+            else
+            {
+                DeselectAll();
+                Behaviour halo = (Behaviour)GetComponent("Halo");
+                halo.enabled = true;
+                selected = true;
+            }
         }
     }
 }

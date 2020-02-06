@@ -21,9 +21,15 @@ public class PlayerTurn : MonoBehaviour
 
     public InputField time;
 
+    public GameObject PauseScreen;
+
+    public bool paused;
+    public int nbPlayer;
+
 
     void Start()
     {
+        paused = false;
         var value = 0;
         if (Int32.TryParse(time.text, out value) && value > 0) {
             timeForTurn = value;
@@ -39,9 +45,22 @@ public class PlayerTurn : MonoBehaviour
         spentTime = 0;
     } 
 
+    public void setPaused(bool state) {
+        paused = state;
+    }
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetButtonDown("Cancel")) {
+            paused = !paused;
+        }
+        if (paused) {
+            PauseScreen.SetActive(true);
+            PauseScreen.transform.GetChild(0).transform.GetChild(1).transform.GetComponent<Text>().text = "It's Player " + nbPlayer.ToString() + " turn,\nPlayer " + (nbPlayer % 2 + 1) + " don't watch !";
+            return;
+        } else {
+            PauseScreen.SetActive(false);
+        }
         spentTime += Time.deltaTime;
         if (spentTime > timeForTurn) {
             gameLoop.ChangeScreen();
