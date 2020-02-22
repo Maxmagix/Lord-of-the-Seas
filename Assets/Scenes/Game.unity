@@ -7747,7 +7747,7 @@ PrefabInstance:
         type: 3}
       propertyPath: topTile
       value: 
-      objectReference: {fileID: 886770284}
+      objectReference: {fileID: 1785977916}
     - target: {fileID: -7297484645934546210, guid: 3bb59d9ee9307644185ed59bb6410abd,
         type: 3}
       propertyPath: leftTile
@@ -37789,7 +37789,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 762248082}
         m_TargetAssemblyTypeName: Rotate, Assembly-CSharp
-        m_MethodName: rotate
+        m_MethodName: turnAngle
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -38611,6 +38611,7 @@ GameObject:
   - component: {fileID: 786950503}
   - component: {fileID: 786950502}
   - component: {fileID: 786950501}
+  - component: {fileID: 786950504}
   m_Layer: 5
   m_Name: RotateRight
   m_TagString: Untagged
@@ -38679,7 +38680,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 786950502}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 786950504}
+        m_TargetAssemblyTypeName: Rotate, Assembly-CSharp
+        m_MethodName: turnAngle
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 90
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &786950502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38717,6 +38730,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 786950499}
   m_CullTransparentMesh: 0
+--- !u!114 &786950504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786950499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b367fc28730c47530aaccb57f769b152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &791026694 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 438332, guid: 67833d6ba7c887d48933b3682ee1df40,
@@ -40929,6 +40954,7 @@ GameObject:
   - component: {fileID: 847957552}
   - component: {fileID: 847957551}
   - component: {fileID: 847957550}
+  - component: {fileID: 847957553}
   m_Layer: 5
   m_Name: RotateLeft
   m_TagString: Untagged
@@ -40997,7 +41023,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 847957551}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 847957553}
+        m_TargetAssemblyTypeName: Rotate, Assembly-CSharp
+        m_MethodName: turnAngle
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: -90
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &847957551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41035,6 +41073,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 847957548}
   m_CullTransparentMesh: 0
+--- !u!114 &847957553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847957548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b367fc28730c47530aaccb57f769b152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &848078247
 GameObject:
   m_ObjectHideFlags: 0
@@ -47455,8 +47505,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 969553498}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -0, y: 0, z: -1.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1501116044}
@@ -47465,7 +47515,7 @@ Transform:
   - {fileID: 689499371}
   m_Father: {fileID: 1717624063}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1001 &970292918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66601,7 +66651,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1429546194}
         m_TargetAssemblyTypeName: Rotate, Assembly-CSharp
-        m_MethodName: rotate
+        m_MethodName: turnAngle
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -70707,7 +70757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8e8b619cda0584a9aa5b20e4b1f6c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  decal: {x: 0, y: 1}
+  decal: {x: 0, y: 0}
   tile: {fileID: 1434848077}
   selected: 1
 --- !u!122 &1550602009
@@ -72958,12 +73008,12 @@ PrefabInstance:
         type: 3}
       propertyPath: rightTile
       value: 
-      objectReference: {fileID: 945344380}
+      objectReference: {fileID: 1967288852}
     - target: {fileID: -7297484645934546210, guid: 3bb59d9ee9307644185ed59bb6410abd,
         type: 3}
       propertyPath: leftTile
       value: 
-      objectReference: {fileID: 1967288852}
+      objectReference: {fileID: 945344380}
     - target: {fileID: 2690856886995867003, guid: 3bb59d9ee9307644185ed59bb6410abd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -80607,15 +80657,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1717624062}
-  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: -1.046, y: -0.13883977, z: 0.853}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.046, y: -0.13883977, z: 1.173}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 456237033}
   - {fileID: 969553499}
   m_Father: {fileID: 530536598}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1717624064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80628,7 +80678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8e8b619cda0584a9aa5b20e4b1f6c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  decal: {x: 0, y: -0.5}
+  decal: {x: 0, y: 0}
   tile: {fileID: 919468156}
   selected: 0
 --- !u!122 &1717624065
@@ -107803,7 +107853,7 @@ PrefabInstance:
         type: 3}
       propertyPath: topTile
       value: 
-      objectReference: {fileID: 1655909384}
+      objectReference: {fileID: 945344380}
     - target: {fileID: -7297484645934546210, guid: 3bb59d9ee9307644185ed59bb6410abd,
         type: 3}
       propertyPath: leftTile
