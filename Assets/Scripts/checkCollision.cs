@@ -17,12 +17,13 @@ public class checkCollision : MonoBehaviour
         if (col.gameObject.tag == "Tile") {
             if (!boat.transform.GetComponent<Gameplay.MoveBoat>().selected)
                 return;
+            boat.transform.GetComponent<Hitbox>().setOccupiedBoat(false);
             if (boat.transform.GetComponent<MoveBoat>().lastTile == null) {
                 boat.transform.GetComponent<Gameplay.MoveBoat>().tile = boat.transform.GetComponent<MoveBoat>().tile.leftTile;
             } else {
                 boat.transform.GetComponent<Gameplay.MoveBoat>().tile = boat.transform.GetComponent<MoveBoat>().lastTile;
             }
-            boat.transform.position = boat.transform.GetComponent<Gameplay.MoveBoat>().tile.gameObject.transform.position; 
+            boat.transform.position = boat.transform.GetComponent<Gameplay.MoveBoat>().tile.gameObject.transform.position;
         }
     }
     // Update is called once per frame

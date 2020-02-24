@@ -64,30 +64,38 @@ namespace Gameplay
             if (Input.GetKeyUp(KeyCode.LeftArrow) && (!collisions || CheckIfEmpty(tile.leftTile)))
             {
                 this.transform.position = tile.leftTile.transform.position;
+                this.transform.GetComponent<Hitbox>().setOccupiedBoat(false);
                 this.transform.position += new Vector3(decal.x, 0, decal.y);
                 lastTile = tile;
                 tile = tile.leftTile;
+                this.transform.GetComponent<Hitbox>().setOccupiedBoat(true);
             }
             else if (Input.GetKeyUp(KeyCode.UpArrow) && (!collisions || CheckIfEmpty(tile.topTile)))
             {
                 this.transform.position = tile.topTile.transform.position;
+                this.transform.GetComponent<Hitbox>().setOccupiedBoat(false);
                 this.transform.position += new Vector3(decal.x, 0, decal.y);
                 lastTile = tile;
                 tile = tile.topTile;
+                this.transform.GetComponent<Hitbox>().setOccupiedBoat(true);
             }
             else if (Input.GetKeyUp(KeyCode.RightArrow) && (!collisions || CheckIfEmpty(tile.rightTile)))
             {
                 this.transform.position = tile.rightTile.transform.position;
+                this.transform.GetComponent<Hitbox>().setOccupiedBoat(false);
                 this.transform.position += new Vector3(decal.x, 0, decal.y);
                 lastTile = tile;
                 tile = tile.rightTile;
+                this.transform.GetComponent<Hitbox>().setOccupiedBoat(true);
             }
             else if (Input.GetKeyUp(KeyCode.DownArrow) && (!collisions || CheckIfEmpty(tile.botTile)))
             {
                 this.transform.position = tile.botTile.transform.position;
+                this.transform.GetComponent<Hitbox>().setOccupiedBoat(false);
                 this.transform.position += new Vector3(decal.x, 0, decal.y);
                 lastTile = tile;
                 tile = tile.botTile;
+                this.transform.GetComponent<Hitbox>().setOccupiedBoat(true);
             }
         }
 

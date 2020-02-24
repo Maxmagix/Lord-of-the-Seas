@@ -16,6 +16,7 @@ public class Rotate : MonoBehaviour
         GameObject[] boats = GameObject.FindGameObjectsWithTag("MovableBoat");
         foreach (GameObject boat in boats) {
             if (boat.transform.GetComponent<MoveBoat>().selected) {
+                boat.transform.GetComponent<Hitbox>().setOccupiedBoat(false);
                 boat.transform.GetComponent<Hitbox>().rotation = (angle + boat.transform.GetComponent<Hitbox>().rotation) % 360;
                 boat.gameObject.transform.rotation = Quaternion.Euler(0, boat.transform.GetComponent<Hitbox>().rotation, 0);
                 boat.transform.GetComponent<Hitbox>().setHitboxTiles();

@@ -8,7 +8,8 @@ public class Hitbox : MonoBehaviour
     public GameObject hitboxTile;
     public Vector2 size;
     public bool selected;
-    private Vector3 lastPos;
+    public Vector3 lastPos;
+    public Vector3 actualPos;
     private List<GameObject> hitboxTiles;
     public int rotation = 0;
 
@@ -19,7 +20,7 @@ public class Hitbox : MonoBehaviour
 
     public void setHitboxTiles()
     {
-        Vector3 actualPos = this.transform.position;
+        actualPos = this.transform.position;
         foreach (GameObject box in hitboxTiles) {
             Destroy(box.gameObject);
         }
@@ -63,17 +64,60 @@ public class Hitbox : MonoBehaviour
                     box.transform.position = nextTile.transform.position;
                 }
             }
-            box.transform.position += new Vector3(0, -0.01f, 0);
+            box.transform.position += new Vector3(0, 0.01f, 0);
         }
         lastPos = actualPos;
+    }
+
+
+    public void setOccupiedBoat(bool value)
+    {
+        for (int pos = 0; pos < size.x * size.y; pos += 1) {
+            float x = pos / size.x;
+            float y = pos % size.x;
+            if (rotation == 90 || rotation == 270 || rotation == -90 || rotation == -270) {
+                x = pos % size.x;
+                y = pos / size.x;
+            }
+            Tile nextTile = this.transform.GetComponent<Gameplay.MoveBoat>().tile;
+            if (x > 0) {
+                if (x % 2 == 1) {
+                    for (; x > 0; x--)
+                        nextTile = nextTile.rightTile;
+                    nextTile.transform.GetComponent<Tile>().boat = value ? this.gameObject : null;
+                    nextTile.transform.GetComponent<Tile>().occupied = value;
+                } else {
+                    nextTile = nextTile.rightTile;
+                    for (; x > 0; x--)
+                        nextTile = nextTile.leftTile;
+                    nextTile.transform.GetComponent<Tile>().boat = value ? this.gameObject : null;
+                    nextTile.transform.GetComponent<Tile>().occupied = value;
+                }
+            }
+            if (y > 0) {
+                if (y % 2 == 1) {
+                    for (; y > 0; y--)
+                        nextTile = nextTile.topTile;
+                    nextTile.transform.GetComponent<Tile>().boat = value ? this.gameObject : null;
+                    nextTile.transform.GetComponent<Tile>().occupied = value;            
+                } else {
+                    nextTile = nextTile.topTile;
+                    for (; y > 0; y--)
+                        nextTile = nextTile.botTile;
+                    nextTile.transform.GetComponent<Tile>().boat = value ? this.gameObject : null;
+                    nextTile.transform.GetComponent<Tile>().occupied = value;
+                }
+            }
+        }
     }
 
     void Update() {
         if (!this.gameObject.active || !this.transform.GetComponent<Gameplay.MoveBoat>().tile.gameObject.active)
             return;
-        Vector3 actualPos = this.transform.position;
+        actualPos = this.transform.position;
         if (actualPos.x != lastPos.x || actualPos.y != lastPos.y || actualPos.z != lastPos.z) {
             setHitboxTiles();
         }
+        setOccupiedBoat(true);
     }
 }
