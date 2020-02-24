@@ -10,6 +10,7 @@ namespace Gameplay
         public Tile tile;
         public bool selected;
         private bool collisions;
+        public Tile lastTile;
 
         // Start is called before the first frame update
         void Start()
@@ -64,24 +65,28 @@ namespace Gameplay
             {
                 this.transform.position = tile.leftTile.transform.position;
                 this.transform.position += new Vector3(decal.x, 0, decal.y);
+                lastTile = tile;
                 tile = tile.leftTile;
             }
             else if (Input.GetKeyUp(KeyCode.UpArrow) && (!collisions || CheckIfEmpty(tile.topTile)))
             {
                 this.transform.position = tile.topTile.transform.position;
                 this.transform.position += new Vector3(decal.x, 0, decal.y);
+                lastTile = tile;
                 tile = tile.topTile;
             }
             else if (Input.GetKeyUp(KeyCode.RightArrow) && (!collisions || CheckIfEmpty(tile.rightTile)))
             {
                 this.transform.position = tile.rightTile.transform.position;
                 this.transform.position += new Vector3(decal.x, 0, decal.y);
+                lastTile = tile;
                 tile = tile.rightTile;
             }
             else if (Input.GetKeyUp(KeyCode.DownArrow) && (!collisions || CheckIfEmpty(tile.botTile)))
             {
                 this.transform.position = tile.botTile.transform.position;
                 this.transform.position += new Vector3(decal.x, 0, decal.y);
+                lastTile = tile;
                 tile = tile.botTile;
             }
         }

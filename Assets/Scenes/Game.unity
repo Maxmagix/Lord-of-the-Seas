@@ -12687,6 +12687,7 @@ MonoBehaviour:
   decal: {x: 0, y: 0}
   tile: {fileID: 777377162}
   selected: 0
+  lastTile: {fileID: 0}
 --- !u!122 &222658605
 Halo:
   m_ObjectHideFlags: 0
@@ -23952,6 +23953,7 @@ MonoBehaviour:
   decal: {x: 0, y: 0}
   tile: {fileID: 153649922}
   selected: 0
+  lastTile: {fileID: 0}
 --- !u!122 &528134402
 Halo:
   m_ObjectHideFlags: 0
@@ -70221,6 +70223,7 @@ MonoBehaviour:
   decal: {x: 0, y: 0}
   tile: {fileID: 1434848077}
   selected: 1
+  lastTile: {fileID: 0}
 --- !u!122 &1550602009
 Halo:
   m_ObjectHideFlags: 0
@@ -80039,6 +80042,7 @@ MonoBehaviour:
   decal: {x: 0, y: 0}
   tile: {fileID: 919468156}
   selected: 0
+  lastTile: {fileID: 0}
 --- !u!122 &1717624065
 Halo:
   m_ObjectHideFlags: 0
@@ -85374,6 +85378,7 @@ MonoBehaviour:
   decal: {x: 0, y: 0}
   tile: {fileID: 2122070784}
   selected: 0
+  lastTile: {fileID: 0}
 --- !u!54 &1880682858
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -94635,6 +94640,7 @@ MonoBehaviour:
   decal: {x: 0, y: 0}
   tile: {fileID: 1607414654}
   selected: 0
+  lastTile: {fileID: 0}
 --- !u!122 &2001263627
 Halo:
   m_ObjectHideFlags: 0

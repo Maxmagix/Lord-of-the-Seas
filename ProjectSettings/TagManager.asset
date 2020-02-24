@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - prefabBoatInFleet
+  - MovableBoat
+  - Tile
   layers:
   - Default
   - TransparentFX
