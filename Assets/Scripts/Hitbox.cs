@@ -84,30 +84,24 @@ public class Hitbox : MonoBehaviour
                 if (x % 2 == 1) {
                     for (; x > 0; x--)
                         nextTile = nextTile.rightTile;
-                    nextTile.transform.GetComponent<Tile>().boat = value ? this.gameObject : null;
-                    nextTile.transform.GetComponent<Tile>().occupied = value;
                 } else {
                     nextTile = nextTile.rightTile;
                     for (; x > 0; x--)
                         nextTile = nextTile.leftTile;
-                    nextTile.transform.GetComponent<Tile>().boat = value ? this.gameObject : null;
-                    nextTile.transform.GetComponent<Tile>().occupied = value;
                 }
             }
             if (y > 0) {
                 if (y % 2 == 1) {
                     for (; y > 0; y--)
                         nextTile = nextTile.topTile;
-                    nextTile.transform.GetComponent<Tile>().boat = value ? this.gameObject : null;
-                    nextTile.transform.GetComponent<Tile>().occupied = value;            
                 } else {
                     nextTile = nextTile.topTile;
                     for (; y > 0; y--)
                         nextTile = nextTile.botTile;
-                    nextTile.transform.GetComponent<Tile>().boat = value ? this.gameObject : null;
-                    nextTile.transform.GetComponent<Tile>().occupied = value;
                 }
             }
+            nextTile.transform.GetComponent<Tile>().boat = value ? this.gameObject : null;
+            nextTile.transform.GetComponent<Tile>().occupied = value;
         }
     }
 
@@ -118,6 +112,5 @@ public class Hitbox : MonoBehaviour
         if (actualPos.x != lastPos.x || actualPos.y != lastPos.y || actualPos.z != lastPos.z) {
             setHitboxTiles();
         }
-        setOccupiedBoat(true);
     }
 }

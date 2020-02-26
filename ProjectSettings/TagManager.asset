@@ -8,6 +8,7 @@ TagManager:
   - MovableBoat
   - Tile
   - GridTile
+  - Game
   layers:
   - Default
   - TransparentFX

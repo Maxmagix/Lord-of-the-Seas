@@ -71,6 +71,8 @@ namespace Cameras {
 
         public void setState(int new_state) {
             state = new_state;
+            if (state >= cameras.Count)
+                state = cameras.Count - 1;
             deactivate();
             cameras[state].gameObject.SetActive(true);
             UIs[state].gameObject.SetActive(true);

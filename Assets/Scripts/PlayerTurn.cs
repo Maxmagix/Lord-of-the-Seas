@@ -19,7 +19,7 @@ public class PlayerTurn : MonoBehaviour
     public GameObject endPos;
     private Vector3 startPosMask;
 
-    public InputField time;
+    public Slider time;
 
     public GameObject PauseScreen;
 
@@ -30,10 +30,7 @@ public class PlayerTurn : MonoBehaviour
     void Start()
     {
         paused = false;
-        var value = 0;
-        if (Int32.TryParse(time.text, out value) && value > 0) {
-            timeForTurn = value;
-        }
+        timeForTurn = time.value;
         startPosFire = fire.gameObject.transform.position;
         startPosRope = ropeTimeLeft.gameObject.transform.position;
         startPosMask = ropeMask.gameObject.transform.position;

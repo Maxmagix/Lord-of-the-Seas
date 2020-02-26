@@ -28,7 +28,7 @@ public class ChooseBoat : MonoBehaviour
     private int indexboat;
     private int max_money = 0;
     public Text goldText;
-    public InputField goldInputField;
+    public Slider goldSlider;
     private Dictionary<int, int> player_wallet = new Dictionary<int, int>();
     public GameObject FleetDir;
     private List<string> BoatsP1 = new List<string>();
@@ -95,11 +95,11 @@ public class ChooseBoat : MonoBehaviour
         }
     }
 
-    public void setGold(String goldstr)
+    public void setGold(int temp_money)
     {
-        var temp_money = 0;
+        //var temp_money = 0;
 
-        Int32.TryParse(goldstr, out temp_money);
+        //Int32.TryParse(goldstr, out temp_money);
         if (temp_money != max_money) {
             if (player_wallet.ContainsKey(0))
                 player_wallet[0] = temp_money;
@@ -168,6 +168,8 @@ public class ChooseBoat : MonoBehaviour
                     newBoat.transform.position = SpawnTileP1.gameObject.transform.position;
                     Vector2 decal = newBoat.transform.GetComponent<Gameplay.MoveBoat>().decal;
                     newBoat.transform.position += new Vector3(decal.x, 0, decal.y);
+                    newBoat.transform.GetComponent<Gameplay.MoveBoat>().DeselectAll();
+                    newBoat.transform.GetComponent<Gameplay.MoveBoat>().selected = true;
                 }
                 if (GridBoatsP2.active) {
                     GameObject newBoat = Instantiate(boatOfMarket.gameObject, GridBoatsP2.transform);
@@ -176,6 +178,8 @@ public class ChooseBoat : MonoBehaviour
                     newBoat.transform.position = SpawnTileP2.gameObject.transform.position;
                     Vector2 decal = newBoat.transform.GetComponent<Gameplay.MoveBoat>().decal;
                     newBoat.transform.position += new Vector3(decal.x, 0, decal.y);
+                    newBoat.transform.GetComponent<Gameplay.MoveBoat>().DeselectAll();
+                    newBoat.transform.GetComponent<Gameplay.MoveBoat>().selected = true;
                 }
             }
         }
@@ -284,7 +288,7 @@ public class ChooseBoat : MonoBehaviour
         boats[1] = new Dictionary<int, String>();
         playerTurn = 0;
         indexboat = 0;
-        setGold(goldInputField.text);
+        setGold((int)goldSlider.value);
         changeBoat(0);
         confirmButton.onClick.AddListener(changePlayer);
     }
@@ -308,7 +312,7 @@ public class ChooseBoat : MonoBehaviour
     public void Update()
     {
         checkOneBoatAtLeast();
-        setGold(goldInputField.text);
+        setGold((int)goldSlider.value);
         updateGold();
         playerTurnText.text = "Player " + (playerTurn + 1).ToString() + " turn";
         goldText.text = player_wallet[playerTurn].ToString();

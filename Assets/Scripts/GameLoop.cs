@@ -5,7 +5,7 @@ using Gameplay;
 
 public class GameLoop : MonoBehaviour
 {
-
+    public WindMove wind;
     public ChooseBoat boats;
     public GameObject placementTurn1;
     public GameObject placementTurn2;
@@ -21,11 +21,18 @@ public class GameLoop : MonoBehaviour
     public GameObject Player1Boats;
     public GameObject Player2Boats;
 
+    public Camera camP1;
+    public Camera camP2;
+    public Camera camGame;
+
+    public bool action;
+
     private int screen;
 
     // Start is called before the first frame update
     void Start()
     {
+        action = false;
         screen = 0;
         interTurn1.SetActive(true);
         interTurn2.SetActive(false);
@@ -37,6 +44,7 @@ public class GameLoop : MonoBehaviour
         Player2Fog.SetActive(true);
         Player1Boats.SetActive(false);
         Player2Boats.SetActive(false);
+        wind = this.transform.GetComponent<WindMove>();
     }
 
     private void setActiveThisScreen(GameObject screen) {
@@ -57,25 +65,41 @@ public class GameLoop : MonoBehaviour
         }
     }
 
+    public void SetAction(bool newstate)
+    {
+        action = newstate;
+    }
+    
+    public void setInGame()
+    {
+            GameObject[] boats = GameObject.FindGameObjectsWithTag("MovableBoat");
+            foreach (GameObject boat in boats) {
+                boat.transform.GetComponent<MoveBoat>().inGame = true;
+        }
+    }
+    
     public void ChangeScreen()
     {
+        action = true;
         screen++;
         if (screen >= 8)
             screen = 4; 
+        this.transform.GetComponent<CannonRange>().setState(false);
         switch(screen) {
             case 0: setActiveThisScreen(interTurn1); break;
             case 1: setActiveThisScreen(placementTurn1); Player1Fog.SetActive(false); Player1Boats.SetActive(true); boats.resetToFull(1); break;
-            case 2: setActiveThisScreen(interTurn2); Player1Fog.SetActive(true); Player1Boats.SetActive(false); break;
+            case 2: setActiveThisScreen(interTurn2); camP1.gameObject.SetActive(false); camP2.gameObject.SetActive(true);Player1Fog.SetActive(true); Player1Boats.SetActive(false); break;
             case 3: setActiveThisScreen(placementTurn2); Player2Fog.SetActive(false); Player2Boats.SetActive(true); boats.resetToFull(2); break;
-            case 4: setActiveThisScreen(interTurn1); Player2Fog.SetActive(true); Player2Boats.SetActive(false); break;
-            case 5: setActiveThisScreen(Turn1); Player1Fog.SetActive(false); Player1Boats.SetActive(true); Turn1.GetComponent<PlayerTurn>().reset(); ChangeCollisions(true); break;
+            case 4: setActiveThisScreen(interTurn1); wind.newDirection(); camP2.gameObject.SetActive(false); camGame.gameObject.SetActive(true); Player2Fog.SetActive(true); Player2Boats.SetActive(false); break;
+            case 5: setActiveThisScreen(Turn1); Player1Fog.SetActive(false); Player1Boats.SetActive(true); wind.pushBoats(); Turn1.GetComponent<PlayerTurn>().reset(); ChangeCollisions(true); break;
             case 6: setActiveThisScreen(interTurn2); Player1Fog.SetActive(true); Player1Boats.SetActive(false); break;
-            case 7: setActiveThisScreen(Turn2); Player2Fog.SetActive(false); Player2Boats.SetActive(true); Turn2.GetComponent<PlayerTurn>().reset(); ChangeCollisions(true); break;
+            case 7: setActiveThisScreen(Turn2); Player2Fog.SetActive(false); Player2Boats.SetActive(true); wind.pushBoats(); Turn2.GetComponent<PlayerTurn>().reset(); ChangeCollisions(true); break;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        this.gameObject.transform.GetComponent<CannonRange>().show();
     }
 }

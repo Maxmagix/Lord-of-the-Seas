@@ -15,15 +15,20 @@ public class Attack : MonoBehaviour
 
     void Start() {
         attackTiles = new List<GameObject>();
-        lastPos = new Vector3(0,0,0);
+        lastPos = this.transform.GetComponent<Gameplay.MoveBoat>().tile.transform.position;
     }
 
-    public void setAttackTiles()
+    public void removeAttackTiles()
     {
         foreach (GameObject box in attackTiles) {
             Destroy(box.gameObject);
         }
         attackTiles.Clear();
+    }
+
+    public void setAttackTiles()
+    {
+        removeAttackTiles();
         Vector3 boxpos = this.transform.GetComponent<Gameplay.MoveBoat>().tile.transform.position;
         for (int pos = 0; pos < size.x * size.y; pos += 1) {
             float x = pos / size.x;

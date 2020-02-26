@@ -7,8 +7,10 @@ using UnityEngine.UI;
 
 public class GameOptions : MonoBehaviour
 {
-	public InputField money;
-    public InputField time;
+	public Slider money;
+    public Slider time;
+    public InputField moneyText;
+    public InputField timeText;
     public Button confirm;
 
     // Start is called before the first frame update
@@ -16,13 +18,28 @@ public class GameOptions : MonoBehaviour
     {
     }
 
+    public void setGold(string mode) {
+        if (mode == "slider") {
+            moneyText.text = money.value.ToString();
+        } else {
+            money.value = int.Parse(moneyText.text);
+        }
+
+    }
+
+    public void setTime(string mode) {
+        if (mode == "slider") {
+            timeText.text = time.value.ToString();
+        } else {
+            time.value = int.Parse(timeText.text);
+        }
+
+    }
     // Update is called once per frame
     void Update()
     {
-        var value = 0;
-
-        if (Int32.TryParse(money.text, out value) && value > 0) {
-            if (Int32.TryParse(time.text, out value) && value > 0) {
+        if ((int)money.value > 0) {
+            if ((int)time.value > 0) {
                 confirm.gameObject.transform.GetChild(0).transform.GetComponent<Text>().color = new Color(1, 0.8564f, 0, 1);
                 confirm.interactable = true;
             } else {
