@@ -39,6 +39,7 @@ public class Attack : MonoBehaviour
             }
             if (x > 0 || y > 0) {
             GameObject box = Instantiate(attackTile);
+            box.transform.GetComponent<TargetShootSelect>().fatherBoat = this.gameObject;
             attackTiles.Add(box);
             Vector3 s = this.transform.localScale;
             //box.transform.localScale = new Vector3(1f / s.x, 0.1f, 1f / s.z);

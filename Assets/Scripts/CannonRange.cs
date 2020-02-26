@@ -30,12 +30,12 @@ public class CannonRange : MonoBehaviour
         GameObject[] boats = GameObject.FindGameObjectsWithTag("MovableBoat");
           foreach (GameObject boat in boats) {
               if (state) {
-                if (boat.GetComponent<MoveBoat>().selected)
-                    boat.GetComponent<Attack>().setAttackTiles();
+                if (boat.transform.GetComponent<MoveBoat>().selected)
+                    boat.transform.GetComponent<Attack>().setAttackTiles();
                 else
-                    boat.GetComponent<Attack>().removeAttackTiles();
+                    boat.transform.GetComponent<Attack>().removeAttackTiles();
               } else {
-                boat.GetComponent<Attack>().removeAttackTiles();
+                boat.transform.GetComponent<Attack>().removeAttackTiles();
               }
         }
     }

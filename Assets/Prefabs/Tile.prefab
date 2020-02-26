@@ -52,6 +52,8 @@ MonoBehaviour:
   botTile: {fileID: 0}
   occupied: 0
   boat: {fileID: 0}
+  normalMaterial: {fileID: 2100000, guid: 17d3fb5fc97bb3b47ae6bb737963d423, type: 2}
+  highlightedMaterial: {fileID: 2100000, guid: da7f3d2884b8947efbc654cccafcf582, type: 2}
 --- !u!54 &7249938635421919466
 Rigidbody:
   m_ObjectHideFlags: 0

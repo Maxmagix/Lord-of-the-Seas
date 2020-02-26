@@ -30,6 +30,7 @@ public class Rotate : MonoBehaviour
                 boat.gameObject.transform.rotation = Quaternion.Euler(0, boat.transform.GetComponent<Hitbox>().rotation, 0);
                 boat.transform.GetComponent<Hitbox>().setOccupiedBoat(true);
                 boat.transform.GetComponent<Hitbox>().setHitboxTiles();
+                boat.transform.GetComponent<Attack>().removeAttackTiles();
             }
         }
     }

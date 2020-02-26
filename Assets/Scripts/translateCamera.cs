@@ -14,8 +14,9 @@ namespace Cameras {
         public List<GameObject> UIs = new List<GameObject>();
         public Camera in_between_cam; 
         private bool translating;
-        private int val = 0;
+        private float val = 0;
         private int direction_translation = 0;
+        private float CPUElapsedTime;
 
 
         // Start is called before the first frame update
@@ -53,11 +54,16 @@ namespace Cameras {
                 setState(state + dir);
                 translating = false;
             }
-            in_between_cam.gameObject.transform.position = new Vector3(actualpos.x + scaleddirection.x, actualpos.y + scaleddirection.y, actualpos.z + scaleddirection.z); 
+            in_between_cam.gameObject.transform.position = new Vector3(actualpos.x + scaleddirection.x * CPUElapsedTime,
+             actualpos.y + scaleddirection.y * CPUElapsedTime,
+              actualpos.z + scaleddirection.z * CPUElapsedTime); 
             var actualrot = in_between_cam.gameObject.transform.rotation;
-            Quaternion newrot = new Quaternion(actualrot.x + scaledangle.x, actualrot.y + scaledangle.y, actualrot.z + scaledangle.z, actualrot.w + scaledangle.w); 
+            Quaternion newrot = new Quaternion(actualrot.x + scaledangle.x * CPUElapsedTime,
+             actualrot.y + scaledangle.y * CPUElapsedTime,
+              actualrot.z + scaledangle.z * CPUElapsedTime,
+               actualrot.w + scaledangle.w * CPUElapsedTime); 
             in_between_cam.gameObject.transform.rotation = newrot;
-            val++;
+            val += CPUElapsedTime;
         }
 
         private void deactivate() {
@@ -79,6 +85,7 @@ namespace Cameras {
         }
 
         private void Update() {
+            CPUElapsedTime = Time.deltaTime;
             if (translating) {
                 move(direction_translation);
             }

@@ -24,8 +24,9 @@ public class WindMove : MonoBehaviour
 
     public void pushBoats()
     {
-            GameObject[] boats = GameObject.FindGameObjectsWithTag("MovableBoat");
-            foreach (GameObject boat in boats) {
+        GameObject[] boats = GameObject.FindGameObjectsWithTag("MovableBoat");
+        foreach (GameObject boat in boats) {
+            if (boat.transform.GetComponent<LifeAndPowerDescription>().deployed) {
                 if (direction <= 45 || direction >= 315)
                     if (boat.transform.GetComponent<Hitbox>().rotation == 270)
                         boat.transform.GetComponent<MoveBoat>().moveBoatToTile(boat.transform.GetComponent<MoveBoat>().tile.leftTile, false);
@@ -38,6 +39,7 @@ public class WindMove : MonoBehaviour
                 if (direction <= 315 && direction >= 225)
                     if (boat.transform.GetComponent<Hitbox>().rotation == 0)
                         boat.transform.GetComponent<MoveBoat>().moveBoatToTile(boat.transform.GetComponent<MoveBoat>().tile.topTile, false);
+            }
         }
     }
     

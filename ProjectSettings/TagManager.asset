@@ -9,6 +9,8 @@ TagManager:
   - Tile
   - GridTile
   - Game
+  - Buoy
+  - AudioPlayer
   layers:
   - Default
   - TransparentFX

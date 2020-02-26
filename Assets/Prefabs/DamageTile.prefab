@@ -124,7 +124,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ba7d5dc1ca8d5da49792f308591b5d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fatherBoat: {fileID: 0}
+  dir: {fileID: 0}
   boat: {fileID: 0}
+  cannonBallPrefab: {fileID: 4528361522549741517, guid: 0d07d9e4da42abd6cb50511ff0834029,
+    type: 3}
 --- !u!65 &4134533261908108662
 BoxCollider:
   m_ObjectHideFlags: 0
