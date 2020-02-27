@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayAudio : MonoBehaviour
 {
     public GameObject soundPlayerPrefab;
+    public float volume;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,7 @@ public class PlayAudio : MonoBehaviour
     {
         GameObject sound = Instantiate(soundPlayerPrefab, this.transform);
         sound.transform.GetComponent<AudioSource>().clip = clip;
+        sound.transform.GetComponent<AudioSource>().volume = volume;
         sound.transform.GetComponent<AudioSource>().Play();
     }
 

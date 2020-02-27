@@ -20,6 +20,8 @@ public class Attack : MonoBehaviour
 
     public void removeAttackTiles()
     {
+        if (attackTiles.Count == 0)
+            return;
         foreach (GameObject box in attackTiles) {
             Destroy(box.gameObject);
         }

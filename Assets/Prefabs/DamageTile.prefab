@@ -129,6 +129,7 @@ MonoBehaviour:
   boat: {fileID: 0}
   cannonBallPrefab: {fileID: 4528361522549741517, guid: 0d07d9e4da42abd6cb50511ff0834029,
     type: 3}
+  shoot: {fileID: 8300000, guid: f416a1c6d351b7a70818ce4416c54175, type: 3}
 --- !u!65 &4134533261908108662
 BoxCollider:
   m_ObjectHideFlags: 0

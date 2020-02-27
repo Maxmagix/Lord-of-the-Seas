@@ -8,12 +8,15 @@ public class MoveToTile : MonoBehaviour
     public Vector3 endpos;
     public AudioClip hit;
     public AudioClip miss;
+    public AudioClip yarr;
+
 
     public float time;
     public float speed;
     public float gravity;
     public float gravitySpeed;
     public bool explodes;
+    public bool kills;
     public Vector3 originaldistance;
     public Vector3 direction;
     public GameObject AudioPlayer;
@@ -51,6 +54,8 @@ public class MoveToTile : MonoBehaviour
         gravity -= gravitySpeed;
         time += 1 / speed;
         if (time >= 1) {
+            if (kills)
+                AudioPlayer.transform.GetComponent<PlayAudio>().play(yarr);
             if (explodes)
                 AudioPlayer.transform.GetComponent<PlayAudio>().play(hit);
             else

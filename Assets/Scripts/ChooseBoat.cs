@@ -15,7 +15,11 @@ public class ChooseBoat : MonoBehaviour
     public GameObject prefabPlaceBoat;
     public GameObject prefabBuyAnimation;
 
-    public Dictionary<int, String>[] boats = new Dictionary<int, String>[2];
+    public Dictionary<int, String>[] boats;
+    public String[] descriptionBoats;
+
+    public Text descriptionText;
+
     private int playerChoice = 0;
     public List<GameObject> marketBoats;
     public List<int> priceBoats;
@@ -29,7 +33,7 @@ public class ChooseBoat : MonoBehaviour
     private int max_money = 0;
     public Text goldText;
     public Slider goldSlider;
-    private Dictionary<int, int> player_wallet = new Dictionary<int, int>();
+    private Dictionary<int, int> player_wallet;
     public GameObject FleetDir;
     private List<string> BoatsP1 = new List<string>();
     private List<string> BoatsP2 = new List<string>();
@@ -168,8 +172,12 @@ public class ChooseBoat : MonoBehaviour
                     newBoat.transform.position = SpawnTileP1.gameObject.transform.position;
                     Vector2 decal = newBoat.transform.GetComponent<Gameplay.MoveBoat>().decal;
                     newBoat.transform.position += new Vector3(decal.x, 0, decal.y);
+                    if (SpawnTileP1.transform.GetComponent<Tile>().boat != null)
+                    newBoat.transform.GetComponent<Hitbox>().setHitboxTiles();
+                    newBoat.transform.GetComponent<Hitbox>().setOccupiedBoat(true);
                     newBoat.transform.GetComponent<Gameplay.MoveBoat>().DeselectAll();
                     newBoat.transform.GetComponent<Gameplay.MoveBoat>().selected = true;
+                    newBoat.transform.GetComponent<Gameplay.MoveBoat>().moveBoatToTile(SpawnTileP1, true);
                 }
                 if (GridBoatsP2.active) {
                     GameObject newBoat = Instantiate(boatOfMarket.gameObject, GridBoatsP2.transform);
@@ -178,8 +186,12 @@ public class ChooseBoat : MonoBehaviour
                     newBoat.transform.position = SpawnTileP2.gameObject.transform.position;
                     Vector2 decal = newBoat.transform.GetComponent<Gameplay.MoveBoat>().decal;
                     newBoat.transform.position += new Vector3(decal.x, 0, decal.y);
+                    if (SpawnTileP2.transform.GetComponent<Tile>().boat != null)
+                    newBoat.transform.GetComponent<Hitbox>().setHitboxTiles();
+                    newBoat.transform.GetComponent<Hitbox>().setOccupiedBoat(true);
                     newBoat.transform.GetComponent<Gameplay.MoveBoat>().DeselectAll();
                     newBoat.transform.GetComponent<Gameplay.MoveBoat>().selected = true;
+                    newBoat.transform.GetComponent<Gameplay.MoveBoat>().moveBoatToTile(SpawnTileP2, true);
                 }
             }
         }
@@ -282,8 +294,11 @@ public class ChooseBoat : MonoBehaviour
             camera.translate(1);
         }
     }
-    void Start()
+
+    void resetShop()
     {
+        player_wallet = new Dictionary<int, int>();
+        boats = new Dictionary<int, String>[2];
         boats[0] = new Dictionary<int, String>();
         boats[1] = new Dictionary<int, String>();
         playerTurn = 0;
@@ -291,6 +306,11 @@ public class ChooseBoat : MonoBehaviour
         setGold((int)goldSlider.value);
         changeBoat(0);
         confirmButton.onClick.AddListener(changePlayer);
+    }
+
+    void Start()
+    {
+        resetShop();
     }
 
     public void changeBoat(int dir)
@@ -307,6 +327,7 @@ public class ChooseBoat : MonoBehaviour
         ChildGameObject.SetActive(true);
         nameActualBoat.text = ChildGameObject.name;
         priceText.text = priceBoats[indexboat].ToString();
+        descriptionText.text = "Power:\n" + descriptionBoats[indexboat];
     }
 
     public void Update()

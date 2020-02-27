@@ -759,7 +759,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a757083ce9ed07240a5511e1c9d6e846, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -809,11 +809,13 @@ MonoBehaviour:
   endpos: {x: 0, y: 0, z: 0}
   hit: {fileID: 8300000, guid: bfed796e861f8f93e99275f5cd95577b, type: 3}
   miss: {fileID: 8300000, guid: fc92d4feff6f0c110823937f28e2f9ae, type: 3}
+  yarr: {fileID: 8300000, guid: 4f95c04b88aec0949a05dccb75cef88f, type: 3}
   time: 0
   speed: 10
   gravity: 0.05
   gravitySpeed: 0.001
   explodes: 0
+  kills: 0
   originaldistance: {x: 0, y: 0, z: 0}
   direction: {x: 0, y: 0, z: 0}
   AudioPlayer: {fileID: 0}

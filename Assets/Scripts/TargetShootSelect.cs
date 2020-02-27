@@ -8,6 +8,7 @@ public class TargetShootSelect : MonoBehaviour
     public GameObject dir;   
     public GameObject boat;
     public GameObject cannonBallPrefab;
+    public AudioClip shoot;
 
     // Start is called before the first frame update
     void Start()
@@ -29,12 +30,19 @@ public class TargetShootSelect : MonoBehaviour
     void spawnBall() {
         GameObject ball = Instantiate(cannonBallPrefab, dir.transform);
         ball.transform.position = fatherBoat.transform.position;
-        fatherBoat.transform.GetComponent<AudioSource>().Play();
+        GameObject[] players = GameObject.FindGameObjectsWithTag("AudioPlayer");
+        foreach (GameObject player in players) {
+            player.transform.GetComponent<PlayAudio>().play(shoot);
+        }
         ball.transform.GetComponent<MoveToTile>().startpos = fatherBoat.transform.position;
         ball.transform.GetComponent<MoveToTile>().endpos = this.transform.position;
         ball.transform.GetComponent<MoveToTile>().explodes = (boat == null ? false : true);
-        if (boat)
+        ball.transform.GetComponent<MoveToTile>().kills = false;
+        if (boat) {
             boat.transform.GetComponent<LifeAndPowerDescription>().life -= 1;
+            if (boat.transform.GetComponent<LifeAndPowerDescription>().life == 0)
+                ball.transform.GetComponent<MoveToTile>().kills = true;
+        }
     }
 
     void OnMouseDown()

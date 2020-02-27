@@ -11,10 +11,12 @@ public class LifeAndPowerDescription : MonoBehaviour
     public bool placingBuoy;
     public GameObject prefabBuoy;
     public GameObject SpecialDir;
+    public int totalLife;
 
     // Start is called before the first frame update
     void Start()
     {
+        totalLife = life;
         placingBuoy = false;
         GameObject[] games = GameObject.FindGameObjectsWithTag("Game");
         foreach (GameObject game in games)

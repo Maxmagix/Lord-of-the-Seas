@@ -7,15 +7,19 @@ public class optionsMenu : MonoBehaviour
 {
     public Slider volumeMusic;
     public AudioSource MusicPlayer;
+    public Slider volumesfx;
+    public PlayAudio smartPlayer;
     // Start is called before the first frame update
     void Start()
     {
         volumeMusic.value = volumeMusic.maxValue / 2;
+        volumesfx.value = volumesfx.maxValue / 2;
     }
 
     // Update is called once per frame
     void Update()
     {
         MusicPlayer.volume = volumeMusic.value / volumeMusic.maxValue;
+        smartPlayer.volume = volumesfx.value / volumesfx.maxValue;
     }
 }
